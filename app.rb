@@ -11,6 +11,41 @@ get("/square/results") do
   erb(:square_results)
 end
 
+get("/square_root/new") do
+  erb(:square_root_calc)
+end
+
+get("/square_root/results") do
+  @the_num = params.fetch("users_number").to_f
+  @the_result = @the_num ** 0.5
+  erb(:square_root_results)
+end
+
+get("/payment/new") do
+  erb(:payment_calc)
+end
+
+get("/payment/results") do
+  @apr = (params.fetch("user_apr").to_f)/100/12
+  @years = (params.fetch("user_years").to_f)*12
+  @principal = params.fetch("user_pv").to_f
+  @numerator = @apr * @principal
+  @denominator = 1-((1+@apr)**(-@years))
+  @the_result = @numerator/@denominator
+  erb(:payment_results)
+end
+
+get("/random/new") do
+  erb(:random_calc)
+end
+
+get("/random/results") do
+  @min = params.fetch("user_min").to_f
+  @max = params.fetch("user_max").to_f
+  @the_result = rand(@min .. @max)
+  erb(:random_results)
+end
+
 get("/") do
   "
   <h1>Welcome to your Sinatra App!</h1>
