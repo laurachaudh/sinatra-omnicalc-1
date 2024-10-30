@@ -6,8 +6,8 @@ get("/square/new") do
 end
 
 get("/square/results") do
-  @the_num = params.fetch("users_number").to_f
-  @the_result = @the_num ** 2
+  @the_num = params.fetch("number").to_f
+  @the_result = @the_num ** 2.0
   erb(:square_results)
 end
 
@@ -26,13 +26,13 @@ get("/payment/new") do
 end
 
 get("/payment/results") do
-  @apr = (params.fetch("user_apr").to_f)/100/12
-  @years = (params.fetch("user_years").to_f)*12
+  @apr = params.fetch("user_apr").to_f
+  @monthly_yield = @apr/100.0/12.0
+  @years = (params.fetch("user_years").to_f)
+  @months = @years*12
   @principal = params.fetch("user_pv").to_f
-  @numerator = @apr * @principal
-  @quotes = 1+@apr
-  @exp = @quotes ** -@years
-  @denominator = 1-@exp
+  @numerator = @monthly_yield * @principal
+  @denominator = (1 - (1 + @monthly_yield)** (-1*@months))
   @the_result = @numerator/@denominator
   erb(:payment_results)
 end
